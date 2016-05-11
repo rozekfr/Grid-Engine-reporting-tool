@@ -1,0 +1,62 @@
+#text #stats_settings{
+	width: 100%;
+    text-align: center;
+    margin-bottom: 5px;
+}
+#text #stats_settings span{
+    margin: 0 5px 0 10px;
+}
+#text table{
+	min-width: 100%;
+}
+#text table th{
+	background-color: navy;
+	color: white;
+	text-align: center;
+	padding: 5px;
+}
+#text table th img {
+ float: right;
+ margin-top: 3px;
+}
+#text table td{
+	padding: 5px;
+	text-align: center;
+}
+#text table .time{
+	text-align: right;
+}
+#text table .time span{
+    display: inline-block;
+    min-width: 2em;
+    margin: 0 5px;
+}
+#text table tr:nth-child(2n+1){
+	background-color: rgba(0,0,128,0.2);
+}
+#text table input{
+	max-width: 100px;
+}
+#text table .filtr{
+	background-color: #FAF342;
+}
+#text table img{
+	margin-left: 5px;
+	opacity: 0.7;
+	vertical-align: baseline;
+	max-width: 15px;
+	max-height: 15px;
+}
+#text table img:hover{
+	opacity: 1;
+	cursor: pointer;
+}
+#text td.good{
+    background-color: #4DE121;
+}
+#text td.bad{
+    background-color: #E4710C;
+}
+#text td.worse{
+    background-color: #B91D09;
+}

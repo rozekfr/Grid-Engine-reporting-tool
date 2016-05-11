@@ -1,0 +1,14 @@
+#slots, #jobs{
+	width: 800px;
+	margin: auto;
+	margin-bottom: 20px;
+	min-height: 360px;
+}
+#slots h2, #jobs h2{
+	margin: 0;
+	margin-bottom: 5px;
+	text-align: center;
+}
+#slots input[type=button], #jobs input[type=button]{
+	float: right;
+}

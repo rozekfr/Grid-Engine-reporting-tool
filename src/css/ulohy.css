@@ -1,0 +1,12 @@
+#resource #resource_list{
+    width: 100%;
+    height: 50px;
+}
+#text h2{
+    text-align: center;
+}
+#text p.info{
+    color: #004C7F;
+    font-style: italic;
+    text-align: center;
+}

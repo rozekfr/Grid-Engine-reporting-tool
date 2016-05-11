@@ -1,0 +1,33 @@
+<?php
+     echo "<div id='settings_content'>";
+        echo "<fieldset>";
+            echo "<legend>Volba období</legend>";
+                echo "<label for='select_obdobi'>Zvolte období:</label>";
+                echo "<select id='select_obdobi' onchange='slots(); jobs()'>";
+                    echo "<option value='0' selected>5 dní (rozlišení 1min)</option>";
+                    echo "<option value='1'>3 týdny (rozlišení 5min)</option>";
+                    echo "<option value='2'>2 měsíce (rozlišení 30min)</option>";
+                    echo "<option value='3'>10 let (rozlišení 2h)</option>";
+                echo "</select>";
+        echo "</fieldset>";
+        echo "<div class='vlevo'>";
+            echo "<fieldset>";
+                echo "<legend>Nastavení grafu slotů</legend>";
+                echo "<table>";
+                    echo "<tr><td><input type='checkbox' class='slots_DS' id='vyuzite' checked onchange='slots()'><label for='vyuzite'>Využíté sloty</label></td></tr>";
+                    echo "<tr><td><input type='checkbox' class='slots_DS' id='dostupne' checked onchange='slots()'><label for='dostupne'>Dostupné sloty</label></td></tr>";
+                echo "</table>";
+            echo "</fieldset>";
+        echo "</div>";
+        echo "<div class='vpravo'>";
+            echo "<fieldset>";
+                echo "<legend>Nastavení grafu úloh</legend>";
+                echo "<table>";
+                    echo "<tr><td><input type='checkbox' class='jobs_DS' id='cekajici' checked onchange='jobs()'><label for='cekajici'>Čekající úlohy</label></td></tr>";
+                    echo "<tr><td><input type='checkbox' class='jobs_DS' id='provadene' checked onchange='jobs()'><label for='provadene'>Prováděné úlohy</label></td></tr>";
+                echo "</table>";
+            echo "</fieldset>";
+        echo "</div>";
+    echo "</div>";
+    echo "<input type='button' id='ok' value='OK' onclick='zavriNastaveni();'>";
+?>

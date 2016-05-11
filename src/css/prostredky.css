@@ -1,0 +1,48 @@
+/* Využítí serverů */
+#matyldy, #scratche{
+	width: 800px;
+	margin: auto;
+	margin-bottom: 20px;
+	min-height: 360px;
+}
+#matyldy h2, #scratche h2{
+	margin: 0;
+	margin-bottom: 5px;
+	text-align: center;
+}
+#matyldy input[type=button], #scratche input[type=button]{
+	float: right;
+}
+
+/* Dostupnost grafických karet */
+#gpus{
+    width: 800px;
+    margin: auto;
+    margin-bottom: 20px;
+    min-height: 360px;
+}
+#gpus h2{
+    margin: 0;
+    margin-bottom: 5px;
+    text-align: center;
+}
+#gpus input[type=button]{
+    float: right;
+}
+
+/* Uzly */
+.node_graph{
+    float: left;
+    display: block;
+    width: 400px;
+    min-height: 300px;
+    margin: 5px calc((50% - 400px)/2);
+}
+.node_graph h2{
+    margin: 0;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.node_graph input[type=button]{
+    float: right;
+}

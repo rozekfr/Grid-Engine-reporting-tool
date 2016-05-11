@@ -1,0 +1,328 @@
+body{
+	padding: 0px;
+	margin: 0px;
+	overflow: auto;
+	font-family: Calibri;
+}
+#stranka{
+	width: 100%;
+	min-width: 1000px;
+}
+#top{
+	float: left;
+	min-width: 1000px;
+	width: 100%;
+	overflow: hidden;
+	background-color: navy;
+	box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.5);
+}
+#top h1{
+	display: inline-block;
+	color: white;
+	vertical-align: middle;
+	padding: 10px;
+	margin: 0px;
+	font-style: italic;
+}
+#content{
+	display: block;
+	float: left;
+	width: 100%;
+	overflow: auto;
+}
+#menu{
+	display: block;
+	float: left;
+	width: 12%;
+	min-width: 120px;
+	overflow: auto;
+	margin: 20px 0px;
+}
+#menu a{
+	display: block;
+	float: left;
+	clear: left;
+	width: 70%;
+	text-align: left;
+	padding: 10px 10px;
+	border: 1px navy solid;
+	color: navy;
+	font-weight: bold;
+	text-decoration: none;
+	margin: 0px 0px 5px -1px;
+	overflow: auto;
+}
+#menu a:hover{
+	animation: menu_animation 0.5s;
+	background-color: steelblue;
+	width: 80%;
+	color: white;
+}
+@keyframes menu_animation{
+	from{background-color: white; width: 70%;}
+	to{background-color: steelblue; width: 80%;}
+}
+#menu .aktivni{
+	background-color: navy;
+	color: white;
+	text-align: center;
+	width: 80%;
+	font-style: italic;
+
+}
+#menu .aktivni:hover{
+	animation: none;
+}
+#menu #podmenu{
+	float: left;
+	display: block;
+	width: calc(100% - 20px);
+	margin-left: 15px;
+	overflow: hidden;
+}
+#menu #podmenu a{
+	float:  left;
+	clear: left;
+	background-color: #eeeeee;
+	width: 75%;
+	padding: 5px 10px;
+	margin-left: 0px;
+}
+#menu #podmenu a:hover{
+	width: 80%;
+	background-color: steelblue;
+}
+#menu #podmenu .aktivni{
+	width: 80%;
+	background-color: navy;
+}
+#menu #podmenu .aktivni:hover{
+	animation: none;
+}
+#menu #administrace{
+	margin-top: 100px;
+}
+#content{
+	width: calc(88% - 41px);
+	min-width: 879px;
+	margin: 20px 0;
+    padding: 0 20px;
+	border-left: 1px silver solid;
+}
+#nastaveni{
+	float: left;
+	display: block;
+	width: 100%;
+	min-width: 840px;
+	margin-bottom: 10px;
+	border-bottom: 1px grey solid;
+	border-top: 1px grey solid;
+	overflow: hidden;
+}
+#nastaveni #vlevo{
+	float: left;
+	width: 90%;
+	text-align: center;
+}
+#nastaveni #vpravo{
+	float: left;
+	width: 10%;
+}
+#nastaveni img{
+	float: right;
+	width: 30px;
+	opacity: 0.5;
+	margin: 10px;
+}
+#nastaveni img:hover{
+	opacity: 1;
+	cursor: pointer;
+}
+#prostredky_podmenu{
+	float: left;
+	display: block;
+	width: calc(100% - 40px);
+	padding: 0 20px;
+	margin-bottom: 10px;
+	text-align: center;
+}
+#prostredky_podmenu a{
+	display: inline-block;
+	padding: 5px 10px;
+	text-decoration: none;
+	color: navy;
+	font-weight: bold;
+	margin: 0 5px;
+	border: 1px navy solid;
+}
+#prostredky_podmenu a:hover{
+	background-color: steelblue;
+	color: white;
+}
+#prostredky_podmenu .aktivni{
+	background-color: navy;
+	color: white;
+}
+#text{
+	display: block;
+	float: left;
+	width: 100%;
+    min-height: 470px;
+	margin: 0;
+}
+#black{
+	display: none;
+	position: fixed;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.8);
+}
+#settings{
+	display: none;
+	position: fixed;
+	z-index: 3;
+	width: calc(60% - 4px);
+	height: calc(80% - 4px);
+	background-color: white;
+	border: 2px navy solid;
+}
+#settings_content{
+	width: 100%;
+	height: 85%;
+	overflow: auto;
+}
+#settings_content table{
+	width: 100%;
+	border-collapse: collapse;
+}
+#settings h2{
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+	background-color: navy;
+	color: white;
+}
+#settings fieldset{
+	margin: 10px;
+	padding: 10px;
+	border: 2px #303030 solid;
+}
+#settings legend{
+	background-color: #303030;
+	color: white;
+	padding: 5px 10px;
+}
+#settings div.vlevo{
+	float: left;
+	width: 50%;
+	min-height: 160px;
+}
+#settings div.vpravo{
+	float: right;
+	width: 50%;
+	min-height: 160px;
+}
+#settings #ok{
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+#info{
+	display: none;
+	position: fixed;
+    z-index: 4;
+	width: 75%;
+	height: 80%;
+	background-color: white;
+	box-shadow: 0 0 2px 2px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+#info #zavri_info{
+	position: absolute;
+	right: 10px;
+	top: 3px;
+	z-index: 5;
+	color: white;
+	font-size: 20px;;
+	text-decoration: none;
+}
+#info h2{
+    margin: 0;
+    line-height: 30px;
+    text-align: center;
+    background-color: navy;
+    color: white;
+}
+#info #info_header{
+    width: 100%;
+    float: left;
+    display: block;
+    overflow: auto;
+}
+#info #info_content{
+    float: left;
+    display: block;
+    width: 100%;
+    height: calc(100% - 30px);
+    overflow: auto;
+}
+#info #info_content p{
+    margin: 5px 10px;
+}
+
+
+/* loading animation */
+.spinner {
+	margin: 100px auto;
+	width: 50px;
+	height: 40px;
+	text-align: center;
+	font-size: 10px;
+}
+
+.spinner > div {
+	background-color: navy;
+	height: 100%;
+	width: 6px;
+	display: inline-block;
+
+	-webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+	animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+	-webkit-animation-delay: -1.1s;
+	animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+	-webkit-animation-delay: -1.0s;
+	animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+	-webkit-animation-delay: -0.9s;
+	animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+	-webkit-animation-delay: -0.8s;
+	animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+	0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+	20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+	0%, 40%, 100% {
+		transform: scaleY(0.4);
+		-webkit-transform: scaleY(0.4);
+	}  20% {
+		   transform: scaleY(1.0);
+		   -webkit-transform: scaleY(1.0);
+	   }
+}
