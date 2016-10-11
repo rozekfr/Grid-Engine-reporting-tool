@@ -18,7 +18,7 @@ This is file with information about the source files of this application.
 - qstat_parser.php			      - used to process qstat file
 - resource_list_checker.sh 	  - used to periodic check if somebody requsted information about blocking jobs
 - resource_list_request.php	  - used to send resource list request
-- resource_list_response.php	- used to get resource list response
+- resource_list_response.php	- used to get resource list response from request
 - rrd_update.php				      - used to update RRD databases (files)
 - update_rrd.sh 				      - used to get current data from cluster and periodic start of rrd_update.php script
 
