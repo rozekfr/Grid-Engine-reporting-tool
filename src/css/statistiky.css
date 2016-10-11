@@ -23,6 +23,13 @@
 	padding: 5px;
 	text-align: center;
 }
+#text table td.skupina{
+    font-size: 12px;
+}
+#text table tr.neaktivni{
+    background-color: dimgray;
+    color: white;
+}
 #text table .time{
 	text-align: right;
 }

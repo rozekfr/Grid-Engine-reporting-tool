@@ -1,6 +1,9 @@
 <?php
-
-    $db = new mysqli('localhost', 'root', '', 'vut_bakalarka');
+    $hostname = "localhost";
+    $user = "root";
+    $password = "";
+	$database = "vut_bakalarka";
+    $db = new mysqli($hostname, $user, $password, $database);
     if ($db->connect_errno) {
         echo "Omlouváme se, ale nepodařilo se nam připojit k databázi.";
         exit();

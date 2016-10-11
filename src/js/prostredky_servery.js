@@ -152,12 +152,12 @@ function global_resource_selector(object){
     var series = document.getElementsByClassName(object.id);
     if(object.checked){
         for(i = 0; i < series.length; i++){
-            series[i].setAttribute("checked","");
+            series[i].checked = true;
         }
     }
     else{
         for(i = 0; i < series.length; i++){
-            series[i].removeAttribute("checked");
+            series[i].checked = false;
         }
     }
 }

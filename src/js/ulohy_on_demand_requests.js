@@ -10,7 +10,7 @@ var timeout1;
  */
 function get_info_request(id_ulohy){
     document.getElementById("info_header").innerHTML = "<h2>Informace o úloze "+id_ulohy+"</h2>";
-    document.getElementById("info_content").innerHTML = "<p>Načítám informace, to může trvat až 15 sekund...</p>"+loading;
+    document.getElementById("info_content").innerHTML = "<p>Načítám informace...</p><p>To může trvat několik sekund (přibližně 15s), pokud se po tomto intervalu nedostaví odpověď, došlo k neočekávanému stavu, opakujte prosím požadavek.</p>"+loading;
     document.getElementById("black").style.display = "block";
     document.getElementById("info").style.display = "block";
 
@@ -67,22 +67,24 @@ function get_info_response(id_ulohy){
  */
 function resource_list_request(){
     var resource_list = document.getElementById("resource_list").value;
-    document.getElementById("jobs_stats").innerHTML = "<p>Načítám informace, to může trvat až 15 sekund...</p>"+loading;
-    //ajax
-    if(window.ActiveXObject) {
-        var httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-    }  // IE
-    else if(window.XMLHttpRequest) {
-        var httpRequest = new XMLHttpRequest();
-    } // ostatní prohlížeče
-    httpRequest.open("GET","resource_list_request.php?rl="+resource_list);
-    httpRequest.onreadystatechange = function(){   // po načtení pokračujeme na FCI
-        if(httpRequest.readyState==4 && httpRequest.status==200) {
-            var response = httpRequest.responseText;
-            resource_list_response(response);
+    if(resource_list != "") {
+        document.getElementById("jobs_stats").innerHTML = "<p>Načítám informace...</p><p>To může trvat několik sekund (přibližně 15s), pokud se po tomto intervalu nedostaví odpověď, došlo k neočekávanému stavu, opakujte prosím požadavek.</p>" + loading;
+        //ajax
+        if (window.ActiveXObject) {
+            var httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        }  // IE
+        else if (window.XMLHttpRequest) {
+            var httpRequest = new XMLHttpRequest();
+        } // ostatní prohlížeče
+        httpRequest.open("GET", "resource_list_request.php?rl=" + resource_list);
+        httpRequest.onreadystatechange = function () {   // po načtení pokračujeme na FCI
+            if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+                var response = httpRequest.responseText;
+                resource_list_response(response);
+            }
         }
+        httpRequest.send(null);
     }
-    httpRequest.send(null);
 }
 
 /**

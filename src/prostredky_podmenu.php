@@ -41,11 +41,12 @@
 
             case 'nodes':
                 foreach($nodes as $node){
-                    if(!empty($_GET["n"]) and $_GET["n"] == $node){
-                        echo "<a href='index.php?m={$_GET["m"]}&amp;s={$_GET["s"]}&amp;n=$node' class='aktivni'>$node</a>";
-                    }
-                    else{
-                        echo "<a href='index.php?m={$_GET["m"]}&amp;s={$_GET["s"]}&amp;n=$node'>$node</a>";
+                    if($node != "globals") {
+	                    if (!empty($_GET["n"]) and $_GET["n"] == $node) {
+		                    echo "<a href='index.php?m={$_GET["m"]}&amp;s={$_GET["s"]}&amp;n=$node' class='aktivni'>$node</a>";
+	                    } else {
+		                    echo "<a href='index.php?m={$_GET["m"]}&amp;s={$_GET["s"]}&amp;n=$node'>$node</a>";
+	                    }
                     }
                 }
                 break;

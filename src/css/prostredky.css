@@ -32,6 +32,7 @@
 
 /* Uzly */
 .node_graph{
+    position: relative;
     float: left;
     display: block;
     width: 400px;
@@ -42,6 +43,21 @@
     margin: 0;
     margin-bottom: 5px;
     text-align: center;
+}
+.node_graph .konfigurace{
+    position: absolute;
+    top: 5px;
+    right: 0;
+    display: block;
+    float: right;
+    width: 30px;
+    height: 29px;
+    background-image: url('../foto/conf.png');
+    background-repeat: no-repeat;
+    background-size: 75%;
+}
+.node_graph .konfigurace:hover{
+    background-image: url('../foto/confH.png');
 }
 .node_graph input[type=button]{
     float: right;

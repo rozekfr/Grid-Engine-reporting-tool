@@ -1,6 +1,7 @@
 //spustí události při načtení okna
 window.onload = function(){
     update_stats(null,0,"ulohy_cekajici_ajax","jobs_stats");
+    document.getElementById("obdobi").innerHTML = "aktuální";
 };
 
 //načítání

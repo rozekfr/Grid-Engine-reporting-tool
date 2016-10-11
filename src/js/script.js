@@ -14,19 +14,6 @@ function zavriNastaveni(){
 	nastaveni.style.display = "none";
 	cerno.style.display = "none";
 }
-function zavriProstredky(){
-	document.getElementById("cerno").style.display = "none";
-	document.getElementById("prostredky").style.display = "none";
-}
-
-function show_hide_group(id){
-	if(document.getElementById("podmenu_"+id).style.display == "block"){
-        document.getElementById("podmenu_"+id).style.display = "none";
-	}
-	else{
-		document.getElementById("podmenu_"+id).style.display = "block";
-	}
-}
 
 function close_divs(){
     if(document.getElementById("settings").style.display == "block"){
@@ -34,11 +21,14 @@ function close_divs(){
     }
     if(document.getElementById("info").style.display == "block"){
         document.getElementById("info").style.display = "none";
+        if(timeout) {
+            clearTimeout(timeout);
+        }
+    }
+    if(document.getElementById("konfigurace").style.display == "block"){
+        document.getElementById("konfigurace").style.display = "none";
     }
     document.getElementById("black").style.display = "none";
-    if(timeout) {
-        clearTimeout(timeout);
-    }
 }
 
 function center_info(){

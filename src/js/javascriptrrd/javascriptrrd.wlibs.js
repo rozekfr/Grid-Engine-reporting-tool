@@ -3247,7 +3247,7 @@ rrdFlotAsync.prototype.reload = function(url) {
   try {
     FetchBinaryURLAsync(url,rrdFlotAsyncCallback,this);
   } catch (err) {
-    alert("Failed loading "+url+"\n"+err);
+    //alert("Failed loading "+url+"\n"+err);
   }
 };
 
@@ -3274,12 +3274,12 @@ function rrdFlotMultiAsyncCallback(bf,arr) {
 
   var i_rrd_data=undefined;
   if (bf.getLength()<1) {
-    alert("File "+obj.url_list[idx]+" is empty (possibly loading failed)! You may get a parial result in the graph.");
+    //alert("File "+obj.url_list[idx]+" is empty (possibly loading failed)! You may get a parial result in the graph.");
   } else {
     try {
       i_rrd_data=new RRDFile(bf,obj.file_options);
     } catch(err) {
-      alert("File "+obj.url_list[idx]+" is not a valid RRD archive! You may get a partial result in the graph.\n"+err);
+      //alert("File "+obj.url_list[idx]+" is not a valid RRD archive! You may get a partial result in the graph.\n"+err);
     }
   }
   if (i_rrd_data!=undefined) {
@@ -3302,7 +3302,7 @@ function rrdFlotMultiAsyncReload(obj,url_list) {
     try {
       FetchBinaryURLAsync(url_list[i],rrdFlotMultiAsyncCallback,[obj,i]);
     } catch (err) {
-      alert("Failed loading "+url_list[i]+". You may get a partial result in the graph.\n"+err);
+      //alert("Failed loading "+url_list[i]+". You may get a partial result in the graph.\n"+err);
       obj.files_needed--;
     }
   }

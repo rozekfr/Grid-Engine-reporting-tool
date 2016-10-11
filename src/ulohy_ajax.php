@@ -7,7 +7,8 @@
     include "pripojeniDB.php";
     include "functions.php";
 
-    $select = $_GET["select"];
+    $database = (empty($_GET["db"]) ? "sge_rt_stats_ulohy" : "{$_GET["db"]}");
+	$select = $_GET["select"];
     $orderby = $_GET["orderby"];
 
     //zpracování where
@@ -29,7 +30,18 @@
         }
     }
 
-    $where = ($is_filtr ? make_where_statement($where) : "1");
+    $where = ($is_filtr ? make_where_statement($database,$where) : "1");
+
+	//pokud je období
+	if(!empty($_GET["od"]) and !empty($_GET["do"])){
+		$database = "sge_rt_stats_ulohy";
+		if($where == "1"){
+			$where = "cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+		}
+		else{
+			$where .= " AND cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+		}
+	}
 
     //LIMIT
     //počet položek
@@ -40,7 +52,8 @@
 
 
     //dotaz do DB
-    $dotazJobs = $db->query("SELECT $select FROM `stats_ulohy` WHERE $where ORDER BY $orderby");
+	$dotazJobs = $db->query("SELECT $select FROM $database WHERE $where ORDER BY $orderby");
+
 
     //nastavení statistik - filtrů a stránkování
     echo "<div id='stats_settings'>";
@@ -98,6 +111,10 @@
                         echo "<th>Počet tasků <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
                         break;
 
+	                case 'pocet_gpu':
+		                echo "<th>Počet GPU <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
+		                break;
+
                     case 'realny_cas':
                         echo "<th>Reálný čas <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
                         break;
@@ -105,6 +122,10 @@
                     case 'cpu_cas':
                         echo "<th>CPU čas <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
                         break;
+
+	                case 'spotreba':
+		                echo "<th>Spotřeba <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
+		                break;
 
                     case 'prum_cas_na_task':
                         echo "<th>Prum. čas tasku <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"ulohy_ajax\",\"jobs_stats\");'></th>";
@@ -143,7 +164,7 @@
     }
     echo "</tr>";
     //data
-    $dotazJobs = $db->query("SELECT $select FROM `stats_ulohy` WHERE $where ORDER BY $orderby $limit");
+    $dotazJobs = $db->query("SELECT $select FROM $database WHERE $where ORDER BY $orderby $limit");
     if(is_object($dotazJobs) and $dotazJobs->num_rows != 0){
         while($job = $dotazJobs->fetch_assoc()){
             echo "<tr>";
@@ -161,6 +182,9 @@
                     else{
                         echo "<td>".write_memory($job[$column])."</td>";
                     }
+                }
+                else if($column == "spotreba"){
+	                echo "<td>".write_consumption($job[$column])."</td>";
                 }
                 else if($column == "efektivita"){
                     if(is_null($job[$column])){

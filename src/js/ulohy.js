@@ -1,6 +1,7 @@
 //spustí události při načtení okna
 window.onload = function(){
     update_stats(null,0,"ulohy_ajax","jobs_stats");
+    obdobi_ajax();
 };
 
 //načítání

@@ -32,12 +32,6 @@ foreach($gpus as $node){
     if(!empty($node)){
         $n = explode(":",$node);
         $gpu_info[$n[0]] = $n;
-        //počítáme jenom globální
-        if (preg_match_all("/.*gpu/", $n[0], $matches)){
-            if(!preg_match_all("/.*-gpu/",$n[0],$matches)) {
-                $total_gpus += intval($n[1]);
-            }
-        }
     }
 }
 
@@ -64,7 +58,7 @@ foreach ($queues as $index => $queue) {
             //global resources
             if ($index == 1) {
                 $matches = array();
-                if(preg_match_all("/.*matylda.*|.*scratch.*/",$line,$matches)){
+                if(preg_match_all("/.*gc:/",$line,$matches)){
                     $global_resource = array();
                     $tmp = explode("=",$line);
                     $tmp2 = explode(":",$tmp[0]);
@@ -107,6 +101,7 @@ foreach ($queues as $index => $queue) {
                     else {
                         $used_slots += $slots[1];
                         $total_slots += $slots[2];
+                        $total_gpus += intval($gpu_info[$resources["name"]][1]);
                     }
                 }
                 else{
@@ -125,18 +120,13 @@ foreach ($queues as $index => $queue) {
                     }
                     //gpu
                     if (preg_match_all("/.*hc:gpu.*/", $line, $matches)) {
-                        //počítáme jenom globální
-                        if (preg_match_all("/.*gpu/", $resources["name"], $matches)) {
-                            if(!preg_match_all("/.*-gpu/",$resources["name"],$matches)){
-                                $free_gpus += intval($tmp[1]);
-                                $gpu = intval($tmp[1]);
-                            }
-                            else{
-                                $gpu = intval($tmp[1]);
-                            }
+                        $gpu = intval($tmp[1]);
+                        //přičítám pouze dostupné
+                        if($resources["available"] == "ano") {
+                            $free_gpus += $gpu;
                         }
                     }
-                    //memory
+                    //memory free
                     if (preg_match_all("/.*hl:mem_free.*/", $line, $matches)) {
                         $mem_free = my_unit($tmp[1]);
                     }
@@ -144,6 +134,10 @@ foreach ($queues as $index => $queue) {
                         if(!isset($mem_free)) {
                             $mem_free = my_unit($tmp[1]);
                         }
+                    }
+                    //memory total
+                    if(preg_match_all("/.*hl:mem_total.*/", $line, $matches)) {
+                        $mem_total = my_unit($tmp[1]);
                     }
                     //disk
                     if (preg_match_all("/.*hl:disk_free.*/", $line, $matches)) {
@@ -156,6 +150,7 @@ foreach ($queues as $index => $queue) {
         if($resources["queuetype"] != "long.q"){
             $resources["cpu"] = (isset($cpu) ? number_format($cpu,2) : null);
             $resources["memory_free"] = (isset($mem_free) ? $mem_free : null);
+            $resources["memory_total"] = (isset($mem_total) ? $mem_total : null);
             $resources["disk_free"] = (isset($disk) ? $disk : null);
             $resources["gpu_free"] = (isset($gpu) ? $gpu : 0);
             $resources["gpu_total"] = $gpu_info[$resources["name"]][1];
@@ -275,13 +270,14 @@ foreach($global_resources as $gr){
 //uzly
 foreach($nodes as $node){
     $cpu = floatval($node["cpu"]);
-    $mem = floatval($node["memory_free"]);
+    $mem_used = floatval($node["memory_total"]) - floatval($node["memory_free"]);
+    $mem_total = floatval($node["memory_total"]);
     $disk = floatval($node["disk_free"]);
     $gpu_used = floatval($node["gpu_total"] - $node["gpu_free"]);
     $gpu_total = floatval($node["gpu_total"] - $gpu_used);
     $used_slots = floatval($node["used_slots"]);
     $free_slots = floatval($node["total_slots"] - $node["used_slots"]);
-    $ret = rrd_update($directory."/".$node["name"].".rrd", "$time:$cpu:$mem:$disk:$gpu_used:$gpu_total:$used_slots:$free_slots");
+    $ret = rrd_update($directory."/".$node["name"].".rrd", "$time:$cpu:$mem_used:$mem_total:$disk:$gpu_used:$gpu_total:$used_slots:$free_slots");
     if($ret){
         echo "{$node["name"]}: Updated ";
     }

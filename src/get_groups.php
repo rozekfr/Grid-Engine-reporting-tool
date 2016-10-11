@@ -49,6 +49,7 @@
 
     $group_file = "groups";
 
+    //získání skupin
     $command = shell_exec("qconf -shgrpl");
     $groups = explode("\n",$command);
     $output = "";
@@ -60,6 +61,32 @@
             $output .= "\n";
         }
     }
+
+    //přidání globálních prostředků
+    $qstat = file_get_contents("qstat");
+    $qstat = preg_split("/.*---*/",$qstat);
+    $qstat = $qstat[1];
+
+    $matches = array();
+    $globals = "";
+    $lines = explode("\n",$qstat);
+    foreach($lines as $line){
+        if(!empty($line)){
+            if(preg_match_all("/.*gc:.*/",$line,$matches)){
+                $resource = explode(":",$line);
+                $resource = $resource[1];
+                $resource = explode("=",$resource);
+                $resource = $resource[0];
+                $globals .= $resource.",";
+            }
+        }
+    }
+
+    $globals = rtrim($globals,",");
+
+    $globals = "@globals:".$globals;
+
+    $output .= $globals;
 
     file_put_contents($group_file, $output);
 ?>

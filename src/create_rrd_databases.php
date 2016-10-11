@@ -174,7 +174,7 @@ function create_node_rrd($directory, $name){
     $_opts = array("--start", "now",
         "--step", "60",
         "DS:cpu:GAUGE:120:0:100",
-        "DS:mem_free:GAUGE:120:0:U",
+        "DS:mem_used:GAUGE:120:0:U",
         "DS:mem_total:GAUGE:120:0:U",
         "DS:disk_free:GAUGE:120:0:U",
         "DS:gpu_used:GAUGE:120:0:U",

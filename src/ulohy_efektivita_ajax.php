@@ -7,6 +7,7 @@
     include "pripojeniDB.php";
     include "functions.php";
 
+	$database = (empty($_GET["db"]) ? "sge_rt_stats_ulohy" : "{$_GET["db"]}");
     $select = $_GET["select"];
     $orderby = $_GET["orderby"];
 
@@ -29,7 +30,18 @@
         }
     }
 
-    $where = ($is_filtr ? make_where_statement($where) : "1");
+    $where = ($is_filtr ? make_where_statement($database,$where) : "1");
+
+    //pokud je období
+    if(!empty($_GET["od"]) and !empty($_GET["do"])){
+        $database = "sge_rt_stats_ulohy";
+        if($where == "1"){
+            $where = "cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+        }
+        else{
+            $where .= " AND cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+        }
+    }
 
     //LIMIT
     //počet položek
@@ -40,7 +52,7 @@
 
 
     //dotaz do DB
-    $dotazJobs = $db->query("SELECT $select FROM `stats_ulohy` WHERE $where ORDER BY $orderby");
+    $dotazJobs = $db->query("SELECT $select FROM $database WHERE $where ORDER BY $orderby");
 
     //nastavení statistik - filtrů a stránkování
     echo "<div id='stats_settings'>";
@@ -123,7 +135,7 @@
     }
     echo "</tr>";
     //data
-    $dotazJobs = $db->query("SELECT $select,vyuzita_pamet_MB,max_vyuzita_pamet_MB FROM `stats_ulohy` WHERE $where ORDER BY $orderby $limit");
+    $dotazJobs = $db->query("SELECT $select,vyuzita_pamet_MB,max_vyuzita_pamet_MB FROM $database WHERE $where ORDER BY $orderby $limit");
     if(is_object($dotazJobs) and $dotazJobs->num_rows != 0){
         while($job = $dotazJobs->fetch_assoc()){
             echo "<tr>";

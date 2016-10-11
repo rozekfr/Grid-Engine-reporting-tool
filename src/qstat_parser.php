@@ -39,12 +39,6 @@
         if(!empty($node)){
             $n = explode(":",$node);
             $gpu_info[$n[0]] = $n;
-            //počítáme jenom globální
-            if (preg_match_all("/.*gpu/", $n[0], $matches)){
-                if(!preg_match_all("/.*-gpu/",$n[0],$matches)) {
-                    $total_gpus += intval($n[1]);
-                }
-            }
         }
     }
 
@@ -71,7 +65,7 @@
                 //global resources
                 if ($index == 1) {
                     $matches = array();
-                    if(preg_match_all("/.*matylda.*|.*scratch.*/",$line,$matches)){
+                    if(preg_match_all("/.*gc:/",$line,$matches)){
                         $global_resource = array();
                         $tmp = explode("=",$line);
                         $tmp2 = explode(":",$tmp[0]);
@@ -114,6 +108,7 @@
                         else {
                             $used_slots += $slots[1];
                             $total_slots += $slots[2];
+                            $total_gpus += intval($gpu_info[$resources["name"]][1]);
                         }
                     }
                     else{
@@ -132,8 +127,11 @@
                         }
                         //gpu
                         if (preg_match_all("/.*hc:gpu.*/", $line, $matches)) {
-                            $free_gpus += intval($tmp[1]);
                             $gpu = intval($tmp[1]);
+	                        //přičítám pouze dostupné
+	                        if($resources["available"] == "ano") {
+		                        $free_gpus += $gpu;
+	                        }
                         }
                         //memory free
                         if (preg_match_all("/.*hl:mem_free.*/", $line, $matches)) {
@@ -239,7 +237,8 @@
     echo "</table>";
     echo "<h1>Grafické karty</h1>";
     echo "<table>";
-    echo "<tr><th>K dispozici:</th><td>$free_gpus</td></tr>";
+    echo "<tr><th>Volné:</th><td>$free_gpus</td></tr>";
+    echo "<tr><th>Využité:</th><td>".($total_gpus - $free_gpus)."</td></tr>";
     echo "<tr><th>Celkem:</th><td>$total_gpus</td></tr>";
     echo "</table>";
     echo "<h1>Uzly</h1>";

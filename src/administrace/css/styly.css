@@ -1,0 +1,334 @@
+body{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    margin: auto;
+    font-family: Calibri, sans-serif;
+    overflow: auto;
+}
+#login{
+    width: 400px;
+    margin: auto;
+    border: 1px navy solid;
+    box-shadow: 0 0 3px 3px rgba(00,00,00,0.5);
+}
+#login h1{
+    padding: 5px;
+    margin: 0;
+    font-size: 24px;
+    text-align: center;
+    background-color: navy;
+    color: white;
+}
+#login table{
+    width: 100%;
+    margin: 10px auto auto;
+    text-align: center;
+}
+#login input{
+    margin: 5px;
+    float: right;
+}
+#stranka{
+    position: relative;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+#top{
+    min-width: 100%;
+    background-color: navy;
+    overflow: auto;
+    height: 40px;
+    box-shadow: 0 0 3px 3px rgba(00,00,00,0.8);
+}
+#top h1{
+    float: left;
+    font-size: 24px;
+    color: white;
+    margin: 5px 10px;
+}
+#top a{
+    float: right;
+    display: inline-block;
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+    margin: 5px 10px;
+}
+#top a:hover{
+    text-decoration: underline;
+}
+#menu{
+    float: left;
+    width: 20%;
+    min-height: calc(100% - 40px - 40px);
+    margin: 20px 0;
+}
+#menu a{
+    clear: left;
+    display: block;
+    width: calc(100% - 10px - 19px);
+    font-size: 18px;
+    text-transform: uppercase;
+    color: navy;
+    text-decoration: none;
+    padding: 6px 5px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-left: -1px;
+    border: 1px navy solid;
+}
+#menu a:hover{
+    background-color: steelblue;
+    color: white;
+}
+#menu .aktivni{
+    background-color: navy;
+    color: white;
+}
+#obsah{
+    float: left;
+    width: calc(100% - 40% - 22px);
+    min-height: calc(100% - 40px - 40px);
+    padding: 0 10px;
+    margin: 20px 0;
+    border-left: 1px navy solid;
+    border-right: 1px navy solid;
+    overflow: auto;
+}
+#obsah div{
+    margin: 20px;
+}
+#obsah div.left{
+    float: left;
+    clear: left;
+    width: calc(50% - 20px);
+    margin: 20px 10px;
+}
+#obsah div.right{
+    float: right;
+    clear: right;
+    width: calc(50% - 20px);
+    margin: 20px 10px;
+}
+#obsah div.left table, #obsah div.right table{
+    width: 90%;
+}
+#obsah h1{
+    text-align: center;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: navy;
+    padding: 0;
+    margin: 10px 0;
+}
+#obsah h2{
+    color: steelblue;
+    font-size: 22px;
+    text-align: left;
+}
+#obsah p{
+    font-size: 16px;
+}
+#obsah p.info{
+    font-style: italic;
+    color: #004C7F;
+    text-align: center;
+}
+#obsah table{
+    width: 80%;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+#obsah th{
+    color: white;
+    background-color: steelblue;
+    text-align: center;
+    padding: 5px 10px;
+    border: 1px navy solid;
+}
+#obsah td{
+    padding: 5px 10px;
+    text-align: center;
+    border: 1px navy solid;
+}
+#obsah td a:hover{
+    text-decoration: underline;
+}
+#obsah ul.info li{
+    color: #004C7F;
+    padding: 5px;
+}
+#obsah span.terminal{
+    font-style: italic;
+    font-weight: bold;
+}
+#obsah a{
+    color: #D64D1E;
+    font-weight: bold;
+    text-decoration: none;
+    font-style: italic;
+}
+#obsah a:hover{
+    color: black;
+}
+#podmenu{
+    float: left;
+    width: 20%;
+    min-height: calc(100% - 40px - 40px);
+    margin: 20px 0;
+    overflow: hidden;
+}
+#podmenu a{
+    float: right;
+    clear: right;
+    display: block;
+    width: calc(100% - 10px - 19px);
+    font-size: 18px;
+    text-transform: uppercase;
+    color: navy;
+    text-decoration: none;
+    padding: 6px 5px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: -1px;
+    border: 1px navy solid;
+}
+#podmenu a:hover{
+    background-color: navy;
+    color: white;
+}
+#podmenu .aktivni{
+    background-color: navy;
+    color: white;
+}
+#black{
+    display: none;
+    position: fixed;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+}
+#upravy{
+    display: none;
+    position: absolute;
+    z-index: 3;
+    min-width: 200px;
+    max-width: 1000px;
+    background-color: white;
+    box-shadow: 0 0 3px 3px rgba(00,00,00,0.8);
+}
+#upravy .zavri{
+    position: absolute;
+    float: right;
+    right: 0;
+    z-index: 3;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: darkred;
+    color: white;
+    padding: 6px 11px;
+}
+#upravy .zavri:hover{
+    background-color: red;
+    animation: zavri_animation 0.3s;
+}
+@keyframes zavri_animation {
+    from{background-color: darkred;}
+    to{background-color: red;}
+}
+#upravy .smaz{
+    border: 1px navy solid;
+    color: buttontext;
+    background-color: buttonface;
+    padding: 0 8px;
+    text-decoration: none;
+    font-size: 15px;
+    border-radius: 2px;
+}
+#upravy .smaz:hover{
+    border-color: navy;
+}
+#upravy h1{
+    background-color: navy;
+    color: white;
+    margin: 0;
+    padding: 5px 10px;
+    font-size: 20px;
+    text-align: center;
+}
+#upravy table{
+    margin: auto;
+}
+#upravy th{
+    text-align: left;
+    color: navy;
+    padding: 5px 10px;
+}
+#upravy td{
+    color: navy;
+    padding: 5px 10px;
+}
+#upravy textarea{
+    width: 238px;
+    max-width: 238px;
+}
+#upravy input[type=submit]{
+    float: right;
+}
+#upravy input[type="text"]{
+    width: 240px;
+    height: 20px;
+    text-align: center;
+}
+#upravy input[type="password"]{
+    width: 240px;
+    height: 20px;
+    text-align: center;
+}
+#upravy input[type="number"]{
+    width: 240px;
+    height: 20px;
+    text-align: center;
+}
+#upravy form table .tabulka{
+    width: 40px;
+    height: 15px;
+    text-align: center;
+}
+#upravy input[readonly]{
+    background-color: aliceblue;
+    color: grey;
+    width: 240px;
+    height: 20px;
+    padding: 2px 1px;
+    border: 1px navy solid;
+}
+#upravy input[type="button"]{
+    background-color: navy;
+    color: white;
+    padding: 4px 10px;
+    margin-left: 15px;
+}
+#upravy select{
+    width: 240px;
+    height: 26px;
+    text-align: center;
+}
+#upravy p.message{
+    text-align: center;
+    padding: 15px 10px;
+    color: #004C7F;
+    font-weight: bold;
+    font-style: italic;
+}
+#upravy p.error{
+    padding: 5px 20px;
+    color: grey;
+    font-style: italic;
+}

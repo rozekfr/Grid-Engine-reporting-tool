@@ -43,6 +43,7 @@ function nodes(){
         if (uzly[i].checked){
             output += "<div id='"+uzly[i].id+"' class='node_graph'>";
                 output += "<h2>"+uzly[i].id+"</h2>";
+                output += "<a href='javascript:void(0);' class='konfigurace' alt='konfigurace' onclick='zobrazKonfiguraci(\""+uzly[i].id+"\")'></a>";
                 output += "<input type='button' value='reset zoom' onclick='do_graph(\""+uzly[i].id+"\");'>";
                 output += "<div id='"+uzly[i].id+"_graph'>";
                 output += loading;
@@ -105,7 +106,8 @@ function do_graph(id){
         'used_slots': {color: "#006600", stack: 'positive', label: "Využité sloty"},
         'free_slots': {color: "#88FF88", stack: 'positive', label: "Dostupné sloty"},
         'cpu': {lines: {fill: true}, color: "#C00919", label: "CPU [%]"},
-        'mem_free': {lines: {fill: true}, color:"#42A1DB", label: "Volná paměť [GB]"},
+        'mem_used': {lines: {lineWidth: 0,fill: true}, color:"#42A1DB", label: "Využitá paměť [GB]"},
+        'mem_total': {lines: {fill: false}, color:"#42A1DB", label: "Celková paměť [GB]"},
         'disk_free': {lines: {fill: true}, color: "#D7FB07", label: "Volný disk [GB]"}
     };
 
@@ -139,4 +141,55 @@ function do_graph(id){
 
     // the rrdFlotAsync object creates and handles the graph
     var f1 = new rrdFlotAsync(id+"_graph", directory+"/"+id+".rrd", null, graph_opts, ds_graph_opts, rrdflot_defaults);
+}
+
+/**
+ * Zobrazuje informace o konfiguraci k danému uzlu.
+ * @param uzel Uzel, u kterého se zjišťuje konfigurace.
+ */
+function zobrazKonfiguraci(uzel){
+    document.getElementById("konfigurace").innerHTML = "<h2>Konfigurace uzlu "+uzel+"</h2>";
+    document.getElementById("konfigurace").innerHTML += "<a href='javascript:void(0)' class='zavri' onclick='zavriKonfiguraci()'>X</a>";
+    document.getElementById("konfigurace").innerHTML += "<p>Načítám informace...</p>"+loading;
+    document.getElementById("black").style.display = "block";
+    document.getElementById("konfigurace").style.display = "block";
+    centerKonfigurace();
+
+    //ajax
+    var httpRequest;
+    if(window.ActiveXObject) {
+        httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+    }  // IE
+    else if(window.XMLHttpRequest) {
+        httpRequest = new XMLHttpRequest();
+    } // ostatní prohlížeče
+    httpRequest.open("GET","konfigurace_ajax.php?uzel="+uzel);
+    httpRequest.onreadystatechange = function(){   // po načtení pokračujeme na FCI
+        if(httpRequest.readyState==4 && httpRequest.status==200) {
+            document.getElementById("konfigurace").innerHTML = "<a href='javascript:void(0)' class='zavri' onclick='zavriKonfiguraci()'>X</a>";
+            document.getElementById("konfigurace").innerHTML += httpRequest.responseText;
+            centerKonfigurace();
+        }
+    }
+    httpRequest.send(null);
+}
+
+/**
+ * Centruje div konfigurace.
+ */
+function centerKonfigurace(){
+    var konfigurace = document.getElementById("konfigurace");
+    var sirkaKonfigurace = konfigurace.offsetWidth + 4;
+    var vyskaKonfigurace = konfigurace.offsetHeight + 4;
+
+    konfigurace.style.marginLeft = (window.innerWidth - sirkaKonfigurace)/2 + "px";
+    konfigurace.style.marginTop = (window.innerHeight - vyskaKonfigurace)/2 + "px";
+}
+
+function zavriKonfiguraci(){
+    var konfigurace = document.getElementById("konfigurace");
+    var cerno = document.getElementById("black");
+
+    konfigurace.style.display = "none";
+    cerno.style.display = "none";
 }

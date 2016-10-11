@@ -7,7 +7,23 @@
     include "pripojeniDB.php";
     include "functions.php";
 
+    $database = (empty($_GET["db"]) ? "sge_rt_stats_uzivatele" : "{$_GET["db"]}");
+	$database = ((!empty($_GET["od"]) and !empty($_GET["do"])) ? "sge_rt_stats_ulohy" : $database);
     $select = $_GET["select"];
+	$select_new = explode(",",$select);
+	$select_db = array();
+	foreach($select_new as $s){
+		if($s == "uzivatel"){
+			$s = $database.".uzivatel";
+		}
+		else if($s == "skupina"){
+			$s = "vychozi_skupina AS skupina";
+
+		}
+		array_push($select_db,$s);
+	}
+	$select_db = implode(",",$select_db);
+
     $orderby = $_GET["orderby"];
 
     //zpracování where
@@ -29,7 +45,86 @@
         }
     }
 
-    $where = ($is_filtr ? make_where_statement($where) : "1");
+    $where = ($is_filtr ? make_where_statement($database,$where) : "1");
+
+	$groupBy = "";
+
+	//pokud je období
+	if(!empty($_GET["od"]) and !empty($_GET["do"])){
+		$database = "sge_rt_stats_ulohy";
+		if($where == "1"){
+			$where = "cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+		}
+		else{
+			$where .= " AND cas_startu BETWEEN '{$_GET["od"]}' AND '{$_GET["do"]}'";
+		}
+		$select_new = explode(",",$select);
+		$select_db = "";
+		//úprava selectu nad tabulkou úloh k získání statistik uživatelů
+		foreach($select_new as $s){
+			switch($s){
+				case 'uzivatel':
+					$string = $database.".uzivatel AS uzivatel";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'skupina':
+					$string = "vychozi_skupina AS skupina";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'pocet_uloh':
+					$string = "COUNT(id_ulohy) as pocet_uloh";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'pocet_tasku':
+					$string = "SUM(pocet_tasku) AS pocet_tasku";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'realny_cas':
+					$string = "SUM(realny_cas) AS realny_cas";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'cpu_cas':
+					$string = "SUM(cpu_cas) AS cpu_cas";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'efektivita':
+					$string = "(IF(SUM(realny_cas)=0,NULL,(SUM(cpu_cas)/SUM(realny_cas)) * 100)) AS efektivita";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'prum_vyuzitych_gpu':
+					$string = "ROUND(pocet_gpu/COUNT(id_ulohy)) AS prum_vyuzitych_gpu";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'prum_cas_na_ulohu':
+					$string = "SUM(realny_cas)/COUNT(id_ulohy) AS prum_cas_na_ulohu";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'prum_cas_na_task':
+					$string = "SUM(realny_cas)/SUM(pocet_tasku) AS prum_cas_na_task";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				case 'spotreba':
+					$string = "SUM(spotreba) AS spotreba";
+					$select_db .= (empty($select_db) ? "$string" : ", $string");
+					break;
+
+				default:
+					$string = $s;
+					break;
+			}
+			$groupBy = "GROUP BY uzivatel";
+		}
+	}
 
     //LIMIT
     //počet položek
@@ -39,7 +134,7 @@
     $limit = "LIMIT ".($stranka-1)*$pocetPolozek.",".$pocetPolozek;
 
     //dotaz do DB
-    $dotazUsers = $db->query("SELECT $select FROM `stats_uzivatele` WHERE $where ORDER BY $orderby");
+    $dotazUsers = $db->query("SELECT $select_db FROM $database JOIN uzivatele ON $database.uzivatel=uzivatele.uzivatel WHERE $where $groupBy ORDER BY $orderby");
 
     //nastavení statistik - filtrů a stránkování
     echo "<div id='stats_settings'>";
@@ -90,6 +185,10 @@
                             echo "<th>Uživatel <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='uzivatel' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
                             break;
 
+	                    case 'vychozi_skupina':
+		                    echo "<th>Skupina <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='uzivatel' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
+		                    break;
+
                         case 'pocet_uloh':
                             echo "<th>Počet úloh <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
                             break;
@@ -113,6 +212,10 @@
                         case 'prum_cas_na_task':
                             echo "<th>Prum. čas tasku <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
                             break;
+
+	                    case 'prum_vyuzitych_gpu':
+		                    echo "<th>Prum. využitých GPU <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
+		                    break;
 
                         case 'spotreba':
                             echo "<th>Spotřeba <img src='foto/".($order == $column ? ($howorder == "ASC" ? "vzestupne" : "sestupne") : "neradit").".png' id='$column' class='razeni' alt='razeni' onclick='update_stats(this,1,\"uzivatele_ajax\",\"users_stats\");'></th>";
@@ -138,20 +241,39 @@
         $i++;
     }
     echo "</tr>";
-    $dotazUsers = $db->query("SELECT $select FROM `stats_uzivatele` WHERE $where ORDER BY $orderby $limit");
+    $dotazUsers = $db->query("SELECT $select_db,aktivita FROM $database JOIN uzivatele ON $database.uzivatel=uzivatele.uzivatel WHERE $where $groupBy ORDER BY $orderby $limit");
     //data
     if(is_object($dotazUsers) and $dotazUsers->num_rows != 0){
         while($user = $dotazUsers->fetch_assoc()){
-            echo "<tr>";
+            if($user["aktivita"] == 1){
+	            echo "<tr>";
+            }
+	        else{
+		        echo "<tr class='neaktivni'>";
+	        }
             foreach($columns as $column){
-                if($column == "realny_cas" or $column == "cpu_cas" or $column == "prum_cas_na_ulohu" or $column == "prum_cas_na_task"){
+                if($column == "skupina"){
+	                echo "<td class='skupina'>";
+	                    echo "{$user["skupina"]}";
+	                    $dotazSkupiny = $db->query("SELECT id_skupiny FROM rozpis_uzivatele_skupiny WHERE uzivatel='{$user["uzivatel"]}'");
+	                    if($dotazSkupiny->num_rows > 0){
+		                    while($sk = $dotazSkupiny->fetch_assoc()){
+			                    echo ", {$sk["id_skupiny"]}";
+		                    }
+	                    }
+                    echo "</td>";
+                }
+                else if($column == "realny_cas" or $column == "cpu_cas" or $column == "prum_cas_na_ulohu" or $column == "prum_cas_na_task"){
                     echo "<td class='time'>".transform_time(floatval($user[$column]))."</td>";
                 }
                 else if($column == "pocet_uloh" or $column == "pocet_tasku"){
                     echo "<td>".number_format($user[$column],0,","," ")."</td>";
                 }
-                else if($column == "efektivita" or $column == "spotreba" or $column == "prum_cas_na_ulohu" or $column == "prum_cas_na_task"){
+                else if($column == "efektivita" or $column == "prum_cas_na_ulohu" or $column == "prum_cas_na_task"){
                     echo "<td>".number_format($user[$column],2,","," ")."</td>";
+                }
+                else if($column == "spotreba"){
+	                echo "<td>".write_consumption($user[$column])."</td>";
                 }
                 else {
 

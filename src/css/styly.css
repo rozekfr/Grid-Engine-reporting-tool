@@ -178,6 +178,29 @@ body{
 	height: 100%;
 	background-color: rgba(0,0,0,0.8);
 }
+.zavri{
+    position: absolute;
+    float: right;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 33px;
+    padding-top: 7px;
+    text-align: center;
+    z-index: 5;
+    color: white;
+    font-size: 20px;;
+    text-decoration: none;
+    background-color: darkred;
+}
+.zavri:hover{
+    background-color: red;
+    animation: zavri_animation 0.3s;
+}
+@keyframes zavri_animation {
+    from{background-color: darkred;}
+    to{background-color: red;}
+}
 #settings{
 	display: none;
 	position: fixed;
@@ -185,12 +208,15 @@ body{
 	width: calc(60% - 4px);
 	height: calc(80% - 4px);
 	background-color: white;
-	border: 2px navy solid;
 }
 #settings_content{
 	width: 100%;
 	height: 85%;
 	overflow: auto;
+}
+#settings_content p{
+    margin: 5px 0;
+    padding: 0;
 }
 #settings_content table{
 	width: 100%;
@@ -198,10 +224,18 @@ body{
 }
 #settings h2{
 	margin: 0;
-	padding: 5px;
+	padding-top: 5px;
+    height: 35px;
 	text-align: center;
 	background-color: navy;
 	color: white;
+}
+#settings h3{
+    margin: 0;
+    padding-top: 5px;
+    text-align: left;
+    color: black;
+    font-size: 16px;
 }
 #settings fieldset{
 	margin: 10px;
@@ -213,15 +247,41 @@ body{
 	color: white;
 	padding: 5px 10px;
 }
+#settings_content table.obdobi td{
+    padding: 5px 10px;
+    text-align: center;
+}
+#settings div{
+    width: 100%;
+    float: left;
+    clear: both;
+}
 #settings div.vlevo{
 	float: left;
+    clear: none;
 	width: 50%;
-	min-height: 160px;
+	min-height: 180px;
 }
 #settings div.vpravo{
 	float: right;
+    clear: none;
 	width: 50%;
-	min-height: 160px;
+	min-height: 180px;
+}
+#settings_content .vystupKal{
+    width: calc(100% - 4px);
+    padding: 0;
+    text-align: center;
+}
+#settings_content .kalendar_button{
+    width: 100%;
+}
+#settings_content .vymaz{
+    float: right;
+    margin-right: 5px;
+}
+#settings_content input[type=time]{
+    margin-top: 1px;
 }
 #settings #ok{
 	position: absolute;
@@ -239,24 +299,18 @@ body{
 	box-shadow: 0 0 2px 2px rgba(0,0,0,0.5);
     overflow: hidden;
 }
-#info #zavri_info{
-	position: absolute;
-	right: 10px;
-	top: 3px;
-	z-index: 5;
-	color: white;
-	font-size: 20px;;
-	text-decoration: none;
-}
+
 #info h2{
     margin: 0;
-    line-height: 30px;
+    padding: 5px;
     text-align: center;
     background-color: navy;
     color: white;
 }
 #info #info_header{
     width: 100%;
+    height: 40px;
+    background-color: navy;
     float: left;
     display: block;
     overflow: auto;
@@ -265,13 +319,95 @@ body{
     float: left;
     display: block;
     width: 100%;
-    height: calc(100% - 30px);
+    height: calc(100% - 40px);
     overflow: auto;
 }
 #info #info_content p{
     margin: 5px 10px;
 }
+#konfigurace{
+    display: none;
+    position: fixed;
+    z-index: 6;
+    min-width: 40%;
+    min-height: 150px;
+    max-width: 90%;
+    max-height: 80%;
+    background-color: white;
+    overflow: auto;
+}
+#konfigurace h2{
+    margin: 0;
+    padding-top: 5px;
+    height: 35px;
+    text-align: center;
+    background-color: navy;
+    color: white;
+}
+#konfigurace table{
+    width: calc(100% - 40px);
+    margin: 20px;
+    border-collapse: collapse;
+}
+#konfigurace th,#konfigurace td{
+    text-align: left;
+    border: 1px black solid;
+    padding: 5px 10px;
+}
+#konfigurace th{
+    background-color: silver;
+}
 
+/*  javascriptový kalendář  */
+.cal{
+    display: none;
+    float: left;
+    left: 0;
+    top: 0;
+    position: absolute;
+    z-index: 50;
+    font-size: 14px;
+    background-color: white;
+    box-shadow: 0 0 3px 3px rgba(00,00,00,0.8);
+    overflow: auto;
+}
+.cal a{
+    color: white;
+    text-decoration: none;
+    opacity:0.8;
+}
+.cal a:hover{
+    opacity:1;
+}
+.cal table{
+    border: 3px white solid;
+    border-collapse: collapse;
+    margin: 0px;
+}
+.cal th{
+    background-color: #004C7F;
+    color: white;
+    padding: 5px;
+    border: 1px white solid;
+    box-shadow: none;
+}
+.cal td{
+    color: #004C7F;
+    background-color: white;
+    padding: 5px;
+    text-align: center;
+    border: 1px #006600 solid;
+}
+.cal .dny:hover{
+    background-color: #004C7F;
+    color: white;
+    cursor: pointer;
+}
+.cal .jine{
+    background-color: silver;
+    border: 1px silver solid
+}
+/*  konec javascriptový kalendář  */
 
 /* loading animation */
 .spinner {

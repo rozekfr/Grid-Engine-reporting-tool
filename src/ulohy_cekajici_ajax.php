@@ -32,7 +32,7 @@
         }
     }
 
-    $where = ($is_filtr ? make_where_statement($where) : "1");
+    $where = ($is_filtr ? make_where_statement($database,$where) : "1");
 
     //LIMIT
     //počet položek

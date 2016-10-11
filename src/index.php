@@ -3,6 +3,7 @@
 	header("Content-Type: text/html; UTF-8");
 	(empty($_GET["m"]) ? $_GET["m"] = "cluster" : $_GET["m"] = $_GET["m"]);
 	(empty($_GET["p"]) ? $_GET["p"] = "prehled" : $_GET["p"] = $_GET["p"]);
+    include_once 'pripojeniDB.php';
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -18,12 +19,17 @@
 </head>
 <body>
 	<div id="black" onclick="close_divs()"></div>
-	<div id="info">
-		<a href="javascript:void(0);" id='zavri_info' onclick="close_divs();">X</a>
+    <div id="kal_od" class="cal"></div><div id="kal_do" class="cal"></div> <!-- kalendáře -->
+    <div id='konfigurace'>
+        <a href='javarscript:void(0)' class='zavri' onclick='zavriKonfiguraci();'>X</a>
+    </div>
+    <div id="info">
+		<a href="javascript:void(0)" class='zavri' onclick="close_divs();">X</a>
 		<div id="info_header"></div>
 		<div id="info_content"></div>
 	</div>
 	<div id="settings">
+        <a href="javascript:void(0)" class='zavri' onclick="close_divs();">X</a>
 		<h2>Nastavení</h2>
 		<?php
 			include 'settings.php';
@@ -41,7 +47,9 @@
 		<div id="content">
 			<div id="nastaveni">
 				<div id='vlevo'>
-					<p>Zvolené období je: <b id="obdobi"></b>.</p>
+					<?php
+                        echo "<p>Zvolené období je: <b id='obdobi'></b>. ".(($_GET["m"] == "uzivatele" or ($_GET["m"] == "ulohy" and (empty($_GET["s"]) or $_GET["s"] == "statistiky" or $_GET["s"] == "efektivita"))) ? "Poslední aktualizace: <b id='last'></b>." : "")."</p>";
+                    ?>
 				</div>
 				<div id='vpravo'>
 					<img src="foto/setting.png" alt="nastavení" onclick="nastaveni();">
