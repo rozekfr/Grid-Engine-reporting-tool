@@ -6,7 +6,7 @@ This is a project created as bachelor thesis on Faculty of information technolog
 This is file with information about the source files of this application.
 
 ### BACK END FILES
-- accounting_parser.php       - used to process accounting data file
+- accounting_parser.php       - used to process accounting data file
 - create_rrd_databases.php 	  - used to create RRD database files, which are necessary needed to run the application
 - get_gpu_info.php 			      - used to get information about GPUs in each node
 - get_groups.php              - used to get groups and their nodes
